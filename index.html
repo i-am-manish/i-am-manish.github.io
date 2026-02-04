@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Will you be my Valentine?</title>
 
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -29,6 +28,24 @@
       font-family: system-ui, sans-serif;
       overflow: hidden;
       padding: 16px;
+    }
+
+    /* 🍓 STRAWBERRY RAIN */
+    .strawberry {
+      position: fixed;
+      top: -30px;
+      font-size: 22px;
+      animation: strawberryFall linear infinite;
+      pointer-events: none;
+      opacity: .9;
+      z-index: 1;
+    }
+
+    @keyframes strawberryFall {
+      to {
+        transform: translateY(120vh) rotate(360deg);
+        opacity: 0.8;
+      }
     }
 
     /* FLOATING HEARTS */
@@ -64,22 +81,13 @@
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.18);
       animation: heartbeat 3.5s ease-in-out infinite;
+      position: relative;
+      z-index: 10;
     }
 
     @keyframes heartbeat {
       0%,100% { transform: scale(1); }
       50% { transform: scale(1.01); }
-    }
-
-    .art {
-      width: min(260px, 80vw);
-      margin: 0 auto 8px;
-      cursor: pointer;
-      transition: transform .3s ease;
-    }
-
-    .art:active {
-      transform: scale(1.05) rotate(-2deg);
     }
 
     h1 {
@@ -105,7 +113,6 @@
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      user-select: none;
       transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
     }
 
@@ -140,11 +147,6 @@
       animation: pop .4s ease;
     }
 
-    .result h2 {
-      font-size: clamp(30px, 4.5vw, 46px);
-      margin: 10px 0;
-    }
-
     .hug {
       width: min(380px, 90vw);
       border-radius: 22px;
@@ -176,45 +178,15 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-    <!-- CUTE ART -->
-    <svg class="art" id="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="fur" x1="0" x2="1">
-          <stop offset="0" stop-color="#f7c7a1"/>
-          <stop offset="1" stop-color="#f2a97b"/>
-        </linearGradient>
-        <linearGradient id="heart" x1="0" x2="1">
-          <stop offset="0" stop-color="#ff4d7d"/>
-          <stop offset="1" stop-color="#ff1f68"/>
-        </linearGradient>
-      </defs>
-
-      <path d="M250 50 C250 33 270 25 282 38
-               C294 25 314 33 314 50
-               C314 78 282 92 282 106
-               C282 92 250 78 250 50Z"
-            fill="url(#heart)"/>
-
-      <path d="M90 120 C90 70 140 40 190 60
-               C240 40 290 70 290 120
-               C290 180 240 210 190 210
-               C140 210 90 180 90 120Z"
-            fill="url(#fur)"/>
-
-      <circle cx="160" cy="130" r="8"/>
-      <circle cx="220" cy="130" r="8"/>
-    </svg>
-
-    <h1>Apoorva, will you be my valentine? 💘</h1>
+    <h1>Apoorva, will you be my valentine? 🍓💖</h1>
 
     <section class="button-zone" id="zone">
-      <button id="yesBtn">Yes 💖</button>
+      <button id="yesBtn">Yes 💕</button>
       <button id="noBtn">No 🙃</button>
     </section>
 
-    <div class="hint" id="hint">The “No” button is feeling shy…</div>
+    <div class="hint" id="hint">The “No” button is scared 🍓</div>
 
-    <!-- RESULT PAGE -->
     <section class="result" id="result">
       <h2 id="finalText"></h2>
 
@@ -224,11 +196,23 @@
         alt="Cute cats hugging"
       />
 
-      <p class="love-note">This is us now 🐱💞</p>
+      <p class="love-note">Strawberries + us = perfect 🍓🐱💞</p>
     </section>
   </main>
 
   <script>
+    /* 🍓 STRAWBERRY RAIN */
+    setInterval(() => {
+      const s = document.createElement("div");
+      s.className = "strawberry";
+      s.textContent = "🍓";
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.animationDuration = 5 + Math.random() * 4 + "s";
+      s.style.fontSize = 18 + Math.random() * 14 + "px";
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 9000);
+    }, 250);
+
     /* FLOATING HEARTS */
     setInterval(() => {
       const h = document.createElement("div");
@@ -239,7 +223,7 @@
       h.style.setProperty("--x", (Math.random() * 100 - 50) + "px");
       document.body.appendChild(h);
       setTimeout(() => h.remove(), 10000);
-    }, 600);
+    }, 700);
 
     const zone = document.getElementById("zone");
     const yesBtn = document.getElementById("yesBtn");
@@ -248,24 +232,11 @@
     const hint = document.getElementById("hint");
     const finalText = document.getElementById("finalText");
 
-    const taunts = [
-      "Nice try 😏",
-      "Almost had it!",
-      "Still no?",
-      "Come onnn 💕",
-      "That button is tired"
-    ];
-
     let yesScale = 1;
-    let tauntIndex = 0;
 
     function growYes() {
-      yesScale = Math.min(2.3, yesScale + 0.1);
+      yesScale = Math.min(2.4, yesScale + 0.12);
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
-    }
-
-    function clamp(n, min, max) {
-      return Math.max(min, Math.min(max, n));
     }
 
     zone.addEventListener("pointermove", e => {
@@ -276,9 +247,8 @@
         (b.top + b.height / 2) - e.clientY
       );
       if (d < 140) {
-        noBtn.style.left = clamp(Math.random() * (z.width - b.width), 0, z.width - b.width) + "px";
-        noBtn.style.top = clamp(Math.random() * (z.height - b.height), 0, z.height - b.height) + "px";
-        hint.textContent = taunts[tauntIndex++ % taunts.length];
+        noBtn.style.left = Math.random() * (z.width - b.width) + "px";
+        noBtn.style.top = Math.random() * (z.height - b.height) + "px";
         growYes();
       }
     });
@@ -286,8 +256,7 @@
     noBtn.addEventListener("click", e => e.preventDefault());
 
     /* CONFETTI */
-    const confettiCanvas = document.getElementById("confettiCanvas");
-    const confettiInstance = confetti.create(confettiCanvas, { resize: true });
+    const confettiInstance = confetti.create(document.getElementById("confettiCanvas"), { resize: true });
 
     function typeText(text) {
       let i = 0;
@@ -302,10 +271,10 @@
       zone.style.display = "none";
       hint.style.display = "none";
       result.style.display = "block";
-      typeText("YAY! You just made my heart do backflips 💘");
+      typeText("YAY! Strawberry love forever 🍓💘");
 
       confettiInstance({
-        particleCount: 350,
+        particleCount: 400,
         spread: 140,
         startVelocity: 55,
         origin: { x: 0.5, y: 0.55 }
