@@ -39,7 +39,7 @@
       animation: floatUp linear infinite;
       pointer-events: none;
     }
-
+ 
     @keyframes floatUp {
       to {
         transform: translateY(-120vh) translateX(var(--x));
