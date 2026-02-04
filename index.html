@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Will you be my Valentine?</title>
 
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -35,7 +36,7 @@
       position: fixed;
       bottom: -20px;
       font-size: 18px;
-      opacity: .5;
+      opacity: .55;
       animation: floatUp linear infinite;
       pointer-events: none;
     }
@@ -144,10 +145,24 @@
       margin: 10px 0;
     }
 
-    .fireworks {
+    .hug {
       width: min(380px, 90vw);
-      margin: 0 auto;
+      border-radius: 22px;
+      margin: 10px auto 0;
+      box-shadow: 0 14px 40px rgba(0,0,0,.18);
+      animation: cuddle 2.5s ease-in-out infinite;
       display: block;
+    }
+
+    .love-note {
+      margin-top: 10px;
+      font-size: 15px;
+      opacity: .8;
+    }
+
+    @keyframes cuddle {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
     }
 
     @keyframes pop {
@@ -161,7 +176,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-    <!-- ART -->
+    <!-- CUTE ART -->
     <svg class="art" id="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="fur" x1="0" x2="1">
@@ -174,7 +189,7 @@
         </linearGradient>
       </defs>
 
-      <path id="tinyHeart" d="M250 50 C250 33 270 25 282 38
+      <path d="M250 50 C250 33 270 25 282 38
                C294 25 314 33 314 50
                C314 78 282 92 282 106
                C282 92 250 78 250 50Z"
@@ -190,19 +205,26 @@
       <circle cx="220" cy="130" r="8"/>
     </svg>
 
-    <h1>Apoorva, will you be my valentine?</h1>
+    <h1>Apoorva, will you be my valentine? 💘</h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes 💖</button>
       <button id="noBtn">No 🙃</button>
     </section>
 
-    <div class="hint" id="hint">The “No” button is feeling mischievous…</div>
+    <div class="hint" id="hint">The “No” button is feeling shy…</div>
 
+    <!-- RESULT PAGE -->
     <section class="result" id="result">
       <h2 id="finalText"></h2>
-      <img class="fireworks"
-        src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" />
+
+      <img
+        class="hug"
+        src="https://media.giphy.com/media/lrr9rHuoJOE0w/giphy.gif"
+        alt="Cute cats hugging"
+      />
+
+      <p class="love-note">This is us now 🐱💞</p>
     </section>
   </main>
 
@@ -225,7 +247,6 @@
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
     const finalText = document.getElementById("finalText");
-    const art = document.getElementById("art");
 
     const taunts = [
       "Nice try 😏",
@@ -263,11 +284,6 @@
     });
 
     noBtn.addEventListener("click", e => e.preventDefault());
-
-    art.addEventListener("click", () => {
-      art.style.filter = "drop-shadow(0 0 18px #ff4d7d)";
-      setTimeout(() => art.style.filter = "", 400);
-    });
 
     /* CONFETTI */
     const confettiCanvas = document.getElementById("confettiCanvas");
